@@ -1,0 +1,8 @@
+excerpt_separator: ""
+pygments: true
+markdown: kramdown
+url: http://gaemi.github.io
+title: gaemi
+tagline: A log of everyday life
+description: My awesome new site
+paginate: 5
