@@ -1,8 +1,26 @@
-excerpt_separator: ""
-pygments: true
-markdown: kramdown
-url: http://gaemi.github.io
 title: gaemi
-tagline: A log of everyday life
-description: My awesome new site
-paginate: 5
+email: segaji@gmail.com
+url: "http://gaemi.github.io/"
+markdown: redcarpet
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript", "with_toc_data", "tables"]
+
+highlighter: pygments
+
+permalink: pretty
+
+safe: true
+lsi: true
+
+gems:
+  - jekyll-redirect-from
+  - jemoji
+  - jekyll-asciidoc
+
+asciidoc: asciidoctor
+
+asciidoctor:
+  attributes:
+    - hardbreaks!
+    - source-highlighter=pygments
+    - pygments-css=style
