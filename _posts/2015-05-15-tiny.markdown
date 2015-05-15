@@ -1,8 +1,0 @@
----
-published: true
-title: Tiny
-layout: post
----
-## 잘되나요?
-
-어어어어
