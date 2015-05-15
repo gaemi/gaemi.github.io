@@ -12,7 +12,7 @@ github_username:  gaemi
 
 # Build settings
 markdown: redcarpet
-pygments: true
+highlighter: pygments
 
 
 gems:
