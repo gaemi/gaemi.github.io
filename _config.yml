@@ -19,8 +19,4 @@ gems:
 - jemoji
 - jekyll-redirect-from
 - jekyll-sitemap
-- jekyll-asciidoc
 
-asciidoc: asciidoctor
-
-asciidoc_ext: asciidoc,adoc,ad

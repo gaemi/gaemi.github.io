@@ -15,7 +15,3 @@ gem 'jekyll-mentions'
 gem 'jekyll-redirect-from'
 gem 'jekyll-sitemap'
 gem 'github-pages'
-gem 'asciidoctor'
-group :jekyll_plugins do
-  gem "jekyll-asciidoc"
-end
