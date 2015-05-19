@@ -2,8 +2,7 @@
 layout: post
 comments: true
 title:  "SublimeText 에서 Evernote 사용하기"
-date:   2015-05-14 09:10:12
-categories: jekyll
+categories: tip
 tags: [evernote, 에버노트, markdown, sublimetext, 서브라임텍스트]
 ---
 
@@ -58,6 +57,7 @@ import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' \+ 'd0e
 ## Markdown 작성법
 
   - 개인적으로는 [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown) 나 [Markdown help](http://stackoverflow.com/editing-help) 가 유용했다.
+  - [markdown-guide](http://markdown-guide.readthedocs.org/en/latest/basics.html) 도 많은 도움이 된다.
   - sublime-evernote wiki의 [Supported Markdown](https://github.com/bordaigorl/sublime-evernote/wiki/Supported-Markdown) 도 확인해보기 바란다.
   - 첨부파일도 넣을 수 있다. `Evernote:` 를 살펴보자.
   - 생각했던것만큼 이쁘게 나오지를 않는다면 [Style 을 수정](https://github.com/bordaigorl/sublime-evernote/wiki/Styling) 하는것도 괜찮은 방법이다.

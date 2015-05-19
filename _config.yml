@@ -13,7 +13,22 @@ github_username:  gaemi
 # Build settings
 markdown: redcarpet
 highlighter: pygments
+
+safe: true
+
+permalink: pretty
+
 paginate: 5
+
+redcarpet:
+    extensions: 
+      - no_intra_emphasis
+      - fenced_code_blocks
+      - tables
+      - strikethrough
+      - superscript
+      - autolink
+      - hard_wrap
 
 gems:
 - jekyll-mentions
