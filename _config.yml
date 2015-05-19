@@ -16,7 +16,6 @@ highlighter: pygments
 
 safe: true
 
-permalink: pretty
 
 paginate: 5
 
