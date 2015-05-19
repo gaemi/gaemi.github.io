@@ -4,6 +4,7 @@ comments: true
 title:  "SublimeText 에서 Evernote 사용하기"
 date:   2015-05-14 09:10:12
 categories: jekyll
+tags: [evernote, 에버노트, markdown, sublimetext, 서브라임텍스트]
 ---
 
 ## Markdown ?

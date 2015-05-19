@@ -13,6 +13,7 @@ github_username:  gaemi
 # Build settings
 markdown: redcarpet
 highlighter: pygments
+paginate: 5
 
 gems:
 - jekyll-mentions
