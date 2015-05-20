@@ -509,11 +509,14 @@ RxJava 에는 Observable 을 만들 수 있는 [다양한 방법](http://reactiv
 
 ### Subject 사용하기
 
-[Subject](http://reactivex.io/documentation/subject.html) 는 Observable + Subscriber 로 종종 표현되고는 합니다만, 정확한 표현은 아니라고 생각합니다.
-__Subject 는 이벤트를 전달받아 구독자들에게 이벤트를 전파하는 중간다리__라고 하는게 좀 더 정확한 표현이라고 생각합니다.
-물론 Subject 는 Observable 과 Subscriber 를 모두 implementation 하고 있습니다.
+[Subject](http://reactivex.io/documentation/subject.html) 는 Observable + Subscriber 로 종종 표현되고는 합니다만, 정확한 표현은 아니라고 생각합니다. (왜냐하면 일반적인 Subscriber 처럼 subscribe()에 직접 사용되는 경우는 거의 없습니다.)
+물론 Subject 는 Observable 과 Subscriber 를 모두 implementation 하고 있으니 틀린 이야기는 아닙니다만,
+저는 __Subject 는 이벤트를 전달받아 구독자들에게 이벤트를 전파하는 중간다리__라고 하는게 좀 더 정확한 표현이라고 생각합니다.
 onNext()로 전달받은 이벤트를 구독자들에게 전파하며, onCompleted()나 onError()를 받으면 이것 역시 구독자들에게 전파하고 Observable로의 역할을 종료하게 됩니다.
 Android 에서는 EventBus 와 같은 형태로도 사용이 가능합니다. 즉 RxJava 를 사용하면 다른 EventBus 라이브러리가 불필요해집니다.
+
+EventBus 언급을 한것에서 살짝 힌트를 받으셨겠지만 Subject 들은 보통 onCompleted 와 같이 종료하는 과정이 없이, 액티비티 라이프사이클(또는 앱 라이프사이클)과 동일하게 살아서 이벤트를 전파하는 역할로 자주 사용됩니다. 
+
 여기서는 PublishSubject 와 BehaviorSubject 만 언급하고 넘어가겠습니다만, 다른 Subject 들도 무척 유용하니 기회가 된다면 한번씩 사용해보시는걸 권장해드립니다.
 
 #### PublishSubject
