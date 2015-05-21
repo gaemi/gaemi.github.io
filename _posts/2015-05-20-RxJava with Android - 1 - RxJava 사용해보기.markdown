@@ -36,6 +36,9 @@ __RxJava 는 이런 ReactiveX 를 Java 에서 사용할 수 있도록 개발된 
 - __Observable__ : 이벤트를 발생시킨다.
 - __Subscriber__ : 발생된 이벤트를 받아 처리한다.
 
+RxJava 의 Observable 는 Observer 패턴과 유사하지만, 조금 다른 부분이 있는데요.
+바로 누군가 구독(subscribe)하고 있지 않는다고 하면 이벤트를 발생시키지 않습니다. (이 부분은 RxJava를 계속 사용하다보면 감이 잡힐겁니다. 그리고 매우 중요한 개념입니다.)
+
 Observer 패턴은 RxJava 를 사용하기전에 꼭 알아두어야 하는 패턴이니 꼭 이해하셔야 합니다.
 
 ## RxAndroid gradle 셋팅
@@ -64,7 +67,7 @@ dependencies {
 
 ### Observable 과 Subscriber 사용해보기
 
-Observer 패턴을 설명하면서 언급했듯이 __Observable 은 이벤트를 발생시키는 주체__입니다. 
+Observer 패턴을 설명하면서 언급했듯이 __Observable 은 이벤트를 발생시키는 주체__입니다.
 Observable 은 이벤트를 하나만 발생시킬 수 있고 여러번 발생시킬수도 있습니다. (심지어는 하나도 발생하지 않을수도 있습니다.)
 또 최종적으로 이벤트의 종료를 알리거나 에러가 발생하였음을 알리게 됩니다.
 
