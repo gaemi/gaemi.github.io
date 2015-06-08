@@ -355,6 +355,7 @@ RxJava 에는 Observable 을 만들 수 있는 [다양한 방법](http://reactiv
 [create()](http://reactivex.io/documentation/operators/create.html) 에 넘겨지는 객체는 OnSubscribe 라는 인터페이스를 구현합니다.
 OnSubscribe 라는 이름에서 힌트를 얻으셨겠지만 아셨겠지만 Observable 에 구독하게되면, 어떤 형태로 이벤트가 발생되고 전파되는지를 정의하는 인터페이습니다.
 RxAndroid 의 소스를 살펴보시면 이 create() 를 이용해서 다양한 Observable 을 구현해 놓았습니다.
+
 ```java
     @Test
     public void create() {
