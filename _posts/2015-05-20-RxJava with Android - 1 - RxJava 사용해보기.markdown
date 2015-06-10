@@ -8,6 +8,11 @@ tags: [android, 안드로이드, rxjava, rxandorid, 비동기처리]
 
 ## 시작에 앞서
 
+이 포스팅은 RxJava 를 사용하여 Android 개발을 하는 방법을 소개하고 있습니다.
+이 장을 이해하시는데 어려움이 있으시다면, 아래 링크된 전 장들을 읽고 오시는걸 추천드립니다.
+
+- [RxJava with Android - 0 - 시작에 앞서](/android/2015/05/20/RxJava%20with%20Android%20-%201%20-%20RxJava%20사용해보기.html) 
+
 ### ReactiveX 란?
 
 RxJava 를 사용하기 전에 Reactive Extensions (ReactiveX 라고 부르도록 하겠습니다) 에 대해서 살짝 언급을 해볼까 합니다.
