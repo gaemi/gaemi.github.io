@@ -167,6 +167,7 @@ RxJava 1.1 부터는 작업이 종료됨과 동시에 1개의 Item 만을 전파
 
 Single 은 Observable 과는 다르게 `onSuccess(item)` 과 `onError(throwable)`만을 가진다.
 비동기 처리 후 결과만을 반환해야 하는 경우, 즉 위와 같이 dao 등을 통해 데이터를 비동기로 불러오고자 하는 경우에 적절하다.
+
 ```
 Single.fromCallable(dao::findAll)
   .subscribeOn(Schedulers.io())
