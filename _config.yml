@@ -1,26 +1,21 @@
 # Site settings
-title: Gaemi
+title: Gaemi Blog
 email: segaji@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+description: |
+  Gaemi 의 기술블로그입니다.
+  아직 갈길이 먼 초보개발자입니다.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://gaemi.github.io" # the base hostname & protocol for your site
 twitter_username: darkGaemi
 github_username:  gaemi
 
 # Build settings
-markdown: redcarpet
-highlighter: pygments
 
 safe: true
 
 
-paginate: 5
-
 redcarpet:
-    extensions: 
+    extensions:
       - no_intra_emphasis
       - fenced_code_blocks
       - tables
@@ -33,4 +28,12 @@ gems:
 - jemoji
 - jekyll-redirect-from
 - jekyll-sitemap
+- jekyll-paginate
 
+paginate: 5
+paginate_path: '/page/:num/'
+
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
