@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getPostDate, getPostSlug, getVisiblePosts, isPrivateEntry } from '../../lib/blog';
+
+const posts = await getVisiblePosts();
+const isDev = import.meta.env.DEV;
+---
+
+<BaseLayout title="Blog" description="생각과 기술, 만드는 과정에 대한 기록.">
+  <section class="blog-head reveal" style="--i: 0">
+    <h1 class="blog-head__title">Blog</h1>
+    <p class="blog-head__desc">생각과 기술, 만드는 과정에 대한 기록.</p>
+  </section>
+
+  {
+    posts.length === 0 ? (
+      <section class="empty-state reveal" style="--i: 1" aria-labelledby="empty-title">
+        <picture class="empty-state__mascot">
+          <source srcset="/mascot/companion-notebook.webp" type="image/webp" />
+          <img
+            src="/mascot/companion-notebook.png"
+            alt="노트 위에 턱을 괴고 조용히 엎드려 있는 강아지 픽셀 일러스트"
+            width="560"
+            height="339"
+            decoding="async"
+          />
+        </picture>
+
+        <div class="empty-state__copy">
+          <h2 id="empty-title" class="empty-state__title">아직 공개된 글이 없습니다</h2>
+          <p class="empty-state__body">
+            초안을 다듬어 첫 글을 올릴 준비를 하고 있습니다. 새 글은 RSS 피드로도 구독할 수 있습니다.
+          </p>
+        </div>
+
+        <div class="empty-state__actions">
+          <a class="control" href="/rss.xml">RSS 피드 구독</a>
+          <a class="control" href="/">홈으로 돌아가기</a>
+        </div>
+
+        {isDev && (
+          <p class="dev-note mono">
+            Local dev: <code>npm run post:new -- first-note</code> 로 비공개 초안을 생성해 바로 미리볼 수 있습니다.
+          </p>
+        )}
+      </section>
+    ) : (
+      <section class="archive reveal" style="--i: 1" aria-label="글 목록">
+        <ul class="archive-list">
+          {posts.map((post) => {
+            const slug = getPostSlug(post);
+            const dateStr = formatDate(getPostDate(post));
+            const isPriv = isPrivateEntry(post);
+            const isDraft = !isPriv && post.data.status === 'draft';
+            return (
+              <li class="archive-list__item">
+                <a class="archive-entry" href={`/blog/${slug}/`}>
+                  <div class="archive-entry__main">
+                    <div class="archive-entry__heading">
+                      <h2 class="archive-entry__title">{post.data.title}</h2>
+                      {isPriv && <span class="status-pill status-pill--private">Private</span>}
+                      {isDraft && <span class="status-pill">Draft</span>}
+                    </div>
+                    {post.data.summary && <p class="archive-entry__summary">{post.data.summary}</p>}
+                  </div>
+                  <time class="archive-entry__date mono tnum" datetime={dateStr}>
+                    {dateStr}
+                  </time>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .blog-head {
+    padding-block: var(--space-xl) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .blog-head__title {
+    font-size: var(--text-display-s);
+  }
+
+  .blog-head__desc {
+    color: var(--color-muted);
+    font-size: var(--text-base);
+  }
+
+  /* Empty State (3-beat pattern: what's empty · why/context · clear next action) */
+  .empty-state {
+    margin-block-start: var(--space-md);
+    padding-block: var(--space-2xl);
+    border-block-start: var(--rule-strong);
+    border-block-end: var(--rule-hairline);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .empty-state__mascot {
+    width: 10.5rem;
+  }
+
+  .empty-state__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .empty-state__title {
+    font-size: var(--text-lg);
+  }
+
+  .empty-state__body {
+    color: var(--color-muted);
+    max-width: 48ch;
+  }
+
+  .empty-state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .dev-note {
+    margin-block-start: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-paper-2);
+    border: var(--rule-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  /* Post List */
+  .archive {
+    margin-block-start: var(--space-md);
+    border-block-start: var(--rule-strong);
+  }
+
+  .archive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .archive-list__item {
+    border-block-end: var(--rule-hairline);
+  }
+
+  .archive-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xs);
+    padding-block: var(--space-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+
+  @media (min-width: 40rem) {
+    .archive-entry {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: var(--space-xl);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .archive-entry:hover .archive-entry__title {
+      color: var(--color-accent);
+    }
+  }
+
+  .archive-entry__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    min-width: 0;
+  }
+
+  .archive-entry__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .archive-entry__title {
+    font-family: var(--font-body);
+    font-size: var(--text-md);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+
+  .archive-entry__summary {
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .archive-entry__date {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+</style>

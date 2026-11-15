@@ -1,0 +1,132 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
+/* Hallmark · genre: editorial · macrostructure: Index-First · nav: N9 · footer: Ft2
+ * theme: custom (vibe: "quiet warm paper, pine-teal seal, tactile companion"
+ *   · paper oklch(97.4% 0.008 82) · accent oklch(41% 0.082 192) teal
+ *   · Newsreader + Pretendard Variable / IBM Plex Sans + JetBrains Mono)
+ * theme_axes: light / roman-serif / cool
+ * inferred-context: audience = peers, collaborators & readers · use = connect & read · tone = editorial
+ * enrichment: E3 companion cutout · contrast: pass (40–41) · slop: pass (42–45)
+ * honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · icons: pass (30) · mobile: pass (34, 49, 50–57)
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces & Ink — OKLCH warm-oat paper + pine-teal accent from mascot harness */
+  --color-paper: oklch(97.4% 0.008 82);
+  --color-paper-2: oklch(94.6% 0.011 80);
+  --color-paper-3: oklch(91.2% 0.013 78);
+  --color-rule: oklch(85.5% 0.011 78);
+  --color-rule-2: oklch(76.5% 0.012 76);
+  --color-muted: oklch(44.5% 0.012 72);
+  --color-neutral: oklch(34% 0.012 70);
+  --color-ink-2: oklch(26% 0.012 66);
+  --color-ink: oklch(18.5% 0.012 64);
+
+  /* Accent (< 3% viewport): deep pine-teal & warm apricot companion note */
+  --color-accent: oklch(41% 0.082 192);
+  --color-accent-ink: oklch(97.5% 0.006 82);
+  --color-accent-soft: oklch(93% 0.022 190);
+  --color-warm: oklch(61% 0.132 58);
+  --color-focus: oklch(46% 0.11 192);
+  --color-error: oklch(52% 0.18 26);
+  --color-success: oklch(45% 0.11 160);
+
+  /* Typography (2+1 rule: Display serif + Body sans + Mono outlier) */
+  --font-display: "Newsreader", "Pretendard Variable", "Pretendard", ui-serif, Georgia, serif;
+  --font-body: "Pretendard Variable", "Pretendard", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Modular 1.25 scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.1875rem;
+  --text-lg: 1.5rem;
+  --text-xl: 1.95rem;
+  --text-2xl: clamp(1.85rem, 3vw + 0.85rem, 2.55rem);
+  --text-display-s: clamp(2.1rem, 3.6vw + 0.9rem, 3.1rem);
+  --text-display: clamp(2.35rem, 4.2vw + 1rem, 3.6rem);
+
+  /* 4pt Spacing Scale */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8.5rem;
+
+  /* Layout & Geometry */
+  --page-max: 48rem;
+  --prose-max: 65ch;
+  --page-gutter: clamp(1.125rem, 4vw, 2rem);
+  --rule-hairline: 1px solid var(--color-rule);
+  --rule-strong: 1px solid var(--color-rule-2);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur-long: 380ms;
+
+  /* Named Z-Index Scale */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: oklch(15.5% 0.009 75);
+    --color-paper-2: oklch(19.5% 0.011 75);
+    --color-paper-3: oklch(23.5% 0.012 75);
+    --color-rule: oklch(28% 0.010 75);
+    --color-rule-2: oklch(36% 0.012 75);
+    --color-muted: oklch(71% 0.009 78);
+    --color-neutral: oklch(80% 0.008 80);
+    --color-ink-2: oklch(87% 0.008 80);
+    --color-ink: oklch(93.5% 0.008 82);
+
+    --color-accent: oklch(75% 0.092 188);
+    --color-accent-ink: oklch(16% 0.012 192);
+    --color-accent-soft: oklch(24% 0.028 190);
+    --color-warm: oklch(73% 0.125 62);
+    --color-focus: oklch(76% 0.105 188);
+    --color-error: oklch(70% 0.16 26);
+    --color-success: oklch(72% 0.11 160);
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-paper: oklch(15.5% 0.009 75);
+  --color-paper-2: oklch(19.5% 0.011 75);
+  --color-paper-3: oklch(23.5% 0.012 75);
+  --color-rule: oklch(28% 0.010 75);
+  --color-rule-2: oklch(36% 0.012 75);
+  --color-muted: oklch(71% 0.009 78);
+  --color-neutral: oklch(80% 0.008 80);
+  --color-ink-2: oklch(87% 0.008 80);
+  --color-ink: oklch(93.5% 0.008 82);
+
+  --color-accent: oklch(75% 0.092 188);
+  --color-accent-ink: oklch(16% 0.012 192);
+  --color-accent-soft: oklch(24% 0.028 190);
+  --color-warm: oklch(73% 0.125 62);
+  --color-focus: oklch(76% 0.105 188);
+  --color-error: oklch(70% 0.16 26);
+  --color-success: oklch(72% 0.11 160);
+}

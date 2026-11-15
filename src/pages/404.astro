@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="요청하신 페이지를 찾을 수 없습니다.">
+  <section class="not-found reveal" style="--i: 0">
+    <picture class="not-found__mascot">
+      <source srcset="/mascot/companion-notebook.webp" type="image/webp" />
+      <img
+        src="/mascot/companion-notebook.png"
+        alt="노트 위에 턱을 괴고 엎드려 있는 강아지 픽셀 일러스트"
+        width="560"
+        height="339"
+        decoding="async"
+      />
+    </picture>
+
+    <p class="not-found__code mono tnum">404</p>
+    <h1 class="not-found__title">요청하신 페이지를 찾을 수 없습니다</h1>
+    <p class="not-found__body">주소가 변경되었거나 삭제된 페이지입니다. 홈에서 다시 시작해 주세요.</p>
+
+    <div class="not-found__actions">
+      <a class="control" href="/">홈으로 이동</a>
+      <a class="control" href="/blog/">블로그 보기</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .not-found__mascot {
+    width: 9.5rem;
+    margin-block-end: var(--space-xs);
+  }
+
+  .not-found__code {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .not-found__title {
+    font-size: var(--text-xl);
+  }
+
+  .not-found__body {
+    color: var(--color-muted);
+  }
+
+  .not-found__actions {
+    margin-block-start: var(--space-xs);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+</style>

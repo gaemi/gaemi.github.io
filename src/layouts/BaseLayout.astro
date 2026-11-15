@@ -1,0 +1,356 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  ogType = 'website',
+} = Astro.props;
+
+const pageTitle = title === siteConfig.title ? title : `${title} · ${siteConfig.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
+const pathname = Astro.url.pathname;
+const isBlogActive = pathname === '/blog' || pathname.startsWith('/blog/');
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${siteConfig.name} · RSS`}
+      href={new URL('/rss.xml', Astro.site ?? siteConfig.url)}
+    />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={new URL('/apple-touch-icon.png', Astro.site ?? siteConfig.url)} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('gaemi-theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.dataset.theme = saved;
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="/" aria-label={`${siteConfig.name} 홈`}>
+          {siteConfig.name}
+        </a>
+
+        <div class="site-header__actions">
+          <nav aria-label="주요 메뉴">
+            <a
+              class:list={['nav-link', { 'is-active': isBlogActive }]}
+              href="/blog/"
+              aria-current={isBlogActive ? 'page' : undefined}
+            >
+              Blog
+            </a>
+          </nav>
+
+          <button
+            type="button"
+            class="theme-btn"
+            id="theme-toggle"
+            aria-label="화면 테마 전환"
+            title="화면 테마 전환"
+          >
+            <svg
+              class="theme-btn__sun"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg
+              class="theme-btn__moon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <span class="site-footer__copy tnum">© {year} {siteConfig.name}</span>
+        <div class="site-footer__links">
+          <a class="foot-link" href="https://github.com/gaemi" rel="noopener noreferrer" target="_blank">
+            GitHub
+          </a>
+          <a class="foot-link" href="/blog/">Blog</a>
+          <a class="foot-link" href="/rss.xml">RSS</a>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const root = document.documentElement;
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const current = root.dataset.theme || (prefersDark ? 'dark' : 'light');
+          const next = current === 'dark' ? 'light' : 'dark';
+          root.dataset.theme = next;
+          try {
+            localStorage.setItem('gaemi-theme', next);
+          } catch {}
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  /* N9 · Edge-aligned minimal navigation */
+  .site-header {
+    width: 100%;
+    padding-block: var(--space-md);
+  }
+
+  .site-header__inner {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: var(--space-sm);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--color-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+    transition:
+      color var(--dur-micro) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  .nav-link:active {
+    transform: translateY(1px);
+  }
+
+  .nav-link.is-active {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 0.35em;
+    text-decoration-thickness: 1.5px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  .theme-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition:
+      color var(--dur-micro) var(--ease-out),
+      background-color var(--dur-micro) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .theme-btn:hover {
+      color: var(--color-ink);
+      background-color: var(--color-paper-2);
+    }
+  }
+
+  .theme-btn:active {
+    transform: translateY(1px);
+  }
+
+  .theme-btn:disabled,
+  .theme-btn[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .theme-btn__sun {
+    display: none;
+  }
+
+  .theme-btn__moon {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-btn__sun {
+      display: block;
+    }
+    :global(:root:not([data-theme='light'])) .theme-btn__moon {
+      display: none;
+    }
+  }
+
+  :global(:root[data-theme='dark']) .theme-btn__sun {
+    display: block;
+  }
+
+  :global(:root[data-theme='dark']) .theme-btn__moon {
+    display: none;
+  }
+
+  /* Ft2 · Inline-rule single line footer */
+  .site-footer {
+    width: 100%;
+    margin-block-start: var(--space-3xl);
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+
+  .site-footer__inner {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    padding-block-start: var(--space-lg);
+    border-block-start: var(--rule-hairline);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-lg);
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+
+  .site-footer__copy {
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .foot-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    line-height: 1;
+    color: var(--color-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color var(--dur-micro) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  .foot-link:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .foot-link:hover {
+      color: var(--color-ink);
+    }
+  }
+</style>

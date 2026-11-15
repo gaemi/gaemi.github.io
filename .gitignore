@@ -1,0 +1,15 @@
+# Build & framework output
+dist/
+.astro/
+node_modules/
+
+# Local-only private blog posts (never tracked in git until released)
+src/content/blog/private/*
+!src/content/blog/private/.gitkeep
+
+# OS & environment
+.DS_Store
+.env
+.env.*
+!.env.example
+npm-debug.log*

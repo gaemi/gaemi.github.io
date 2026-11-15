@@ -1,0 +1,363 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../data/site';
+import { formatDate, getPostDate, getPostSlug, getVisiblePosts, isPrivateEntry } from '../lib/blog';
+
+const recentPosts = (await getVisiblePosts()).slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="intro reveal" style="--i: 0" aria-labelledby="intro-heading">
+    <div class="intro__copy">
+      <div class="intro__title-group">
+        <h1 id="intro-heading" class="intro__name">{siteConfig.intro.headline}</h1>
+        <p class="intro__role">{siteConfig.intro.role}</p>
+      </div>
+      <p class="intro__summary">{siteConfig.intro.summary}</p>
+    </div>
+
+    <figure class="companion-seal">
+      <div class="companion-seal__frame">
+        <picture>
+          <source srcset="/mascot/companion.webp" type="image/webp" />
+          <img
+            src="/mascot/companion.png"
+            alt="베이지색 조끼를 입고 단정하게 앉아 있는 갈색 곱슬 강아지 픽셀 일러스트"
+            width="560"
+            height="899"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
+      <figcaption class="companion-seal__caption">
+        <span class="companion-seal__dot" aria-hidden="true"></span>
+        <span>{siteConfig.companion.caption}</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="index-sheet reveal" style="--i: 1" aria-label="채널 및 링크">
+    <ul class="index-list">
+      {
+        siteConfig.links.map((item) => (
+          <li class="index-list__item">
+            <a
+              class="index-row"
+              href={item.href}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
+              <span class="index-row__label">{item.label}</span>
+              <span class="index-row__right">
+                <span class="index-row__meta mono">{item.meta}</span>
+                <span class="index-row__glyph" aria-hidden="true">
+                  {item.external ? '↗' : '→'}
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    recentPosts.length > 0 && (
+      <section class="recent-writing reveal" style="--i: 2" aria-labelledby="recent-heading">
+        <div class="recent-writing__head">
+          <h2 id="recent-heading" class="recent-writing__title">Recent writing</h2>
+          <a class="recent-writing__all" href="/blog/">
+            모두 보기 <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <ul class="post-rows">
+          {recentPosts.map((post) => {
+            const slug = getPostSlug(post);
+            const dateStr = formatDate(getPostDate(post));
+            const isPriv = isPrivateEntry(post);
+            const isDraft = !isPriv && post.data.status === 'draft';
+            return (
+              <li class="post-rows__item">
+                <a class="post-row" href={`/blog/${slug}/`}>
+                  <span class="post-row__title-wrap">
+                    <span class="post-row__title">{post.data.title}</span>
+                    {isPriv && <span class="status-pill status-pill--private">Private</span>}
+                    {isDraft && <span class="status-pill">Draft</span>}
+                  </span>
+                  <time class="post-row__date mono tnum" datetime={dateStr}>
+                    {dateStr}
+                  </time>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: var(--space-lg) var(--space-xl);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xl);
+    align-items: end;
+  }
+
+  @media (min-width: 40rem) {
+    .intro {
+      padding-block: var(--space-xl) var(--space-2xl);
+      grid-template-columns: minmax(0, 1fr) 8.75rem;
+      gap: var(--space-2xl);
+    }
+  }
+
+  .intro__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .intro__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .intro__name {
+    font-size: var(--text-display);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+
+  .intro__role {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .intro__summary {
+    margin-block-start: var(--space-xs);
+    color: var(--color-ink-2);
+    font-size: var(--text-base);
+    line-height: 1.72;
+    max-width: 46ch;
+  }
+
+  /* Tactile Companion Seal */
+  .companion-seal {
+    margin: 0;
+    width: 7.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  @media (min-width: 40rem) {
+    .companion-seal {
+      width: 100%;
+      justify-self: end;
+    }
+  }
+
+  .companion-seal__frame {
+    padding: var(--space-sm) var(--space-sm) var(--space-xs);
+    background-color: var(--color-paper-2);
+    border: var(--rule-hairline);
+    border-radius: var(--radius-md);
+    display: grid;
+    place-items: center;
+  }
+
+  .companion-seal__frame img {
+    width: auto;
+    max-height: 7.75rem;
+    object-fit: contain;
+  }
+
+  @media (min-width: 40rem) {
+    .companion-seal__frame img {
+      max-height: 9.25rem;
+    }
+  }
+
+  .companion-seal__caption {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .companion-seal__dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-warm);
+    flex-shrink: 0;
+  }
+
+  /* Index-First Link Sheet */
+  .index-sheet {
+    border-block-start: var(--rule-strong);
+  }
+
+  .index-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .index-list__item {
+    border-block-end: var(--rule-hairline);
+  }
+
+  .index-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 3.5rem;
+    padding-block: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+
+  .index-row__label {
+    font-size: var(--text-md);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .index-row__right {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    line-height: 1;
+    color: var(--color-muted);
+    min-width: 0;
+  }
+
+  .index-row__meta {
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  .index-row__glyph {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    transition:
+      transform var(--dur-micro) var(--ease-out),
+      color var(--dur-micro) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .index-row:hover {
+      color: var(--color-accent);
+    }
+
+    .index-row:hover .index-row__glyph {
+      color: var(--color-accent);
+      transform: translateX(2px);
+    }
+  }
+
+  .index-row:active .index-row__glyph {
+    transform: translateX(1px);
+  }
+
+  /* Conditional Recent Writing */
+  .recent-writing {
+    margin-block-start: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .recent-writing__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .recent-writing__title {
+    font-size: var(--text-lg);
+  }
+
+  .recent-writing__all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    min-height: 2.75rem;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .recent-writing__all:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .post-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block-start: var(--rule-hairline);
+  }
+
+  .post-rows__item {
+    border-block-end: var(--rule-hairline);
+  }
+
+  .post-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-md);
+    min-height: 3rem;
+    padding-block: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post-row:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .post-row__title-wrap {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+    min-width: 0;
+  }
+
+  .post-row__title {
+    font-weight: 500;
+  }
+
+  .post-row__date {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+</style>

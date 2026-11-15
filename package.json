@@ -1,0 +1,30 @@
+{
+  "name": "gaemi.github.io",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify": "astro check && astro build && node scripts/verify-build.mjs",
+    "post:new": "node scripts/post.mjs new",
+    "post:release": "node scripts/post.mjs release",
+    "post:list": "node scripts/post.mjs list",
+    "mascot:prepare": "node scripts/prepare-mascot.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.5",
+    "astro": "^7.4.12"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "sharp": "^0.35.5",
+    "typescript": "^6.0.0"
+  }
+}
