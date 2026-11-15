@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../data/site';
-import { formatDate, getPostDate, getPostSlug, getVisiblePosts, isPrivateEntry } from '../lib/blog';
+import { formatDate, formatEntryDate, getPostDate, getPostSlug, getVisiblePosts, isPrivateEntry } from '../lib/blog';
 
 const recentPosts = (await getVisiblePosts()).slice(0, 3);
 ---
@@ -75,19 +75,19 @@ const recentPosts = (await getVisiblePosts()).slice(0, 3);
         <ul class="post-rows">
           {recentPosts.map((post) => {
             const slug = getPostSlug(post);
-            const dateStr = formatDate(getPostDate(post));
+            const rawDate = getPostDate(post);
+            const labelStr = formatEntryDate(post);
+            const isoStr = rawDate ? formatDate(rawDate) : undefined;
             const isPriv = isPrivateEntry(post);
-            const isDraft = !isPriv && post.data.status === 'draft';
             return (
               <li class="post-rows__item">
                 <a class="post-row" href={`/blog/${slug}/`}>
                   <span class="post-row__title-wrap">
                     <span class="post-row__title">{post.data.title}</span>
                     {isPriv && <span class="status-pill status-pill--private">Private</span>}
-                    {isDraft && <span class="status-pill">Draft</span>}
                   </span>
-                  <time class="post-row__date mono tnum" datetime={dateStr}>
-                    {dateStr}
+                  <time class="post-row__date mono tnum" datetime={isoStr}>
+                    {labelStr}
                   </time>
                 </a>
               </li>

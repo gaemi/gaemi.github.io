@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   formatDate,
+  formatEntryDate,
   getPostDate,
   getPostSlug,
   getVisiblePosts,
@@ -24,10 +25,11 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const publishedStr = formatDate(getPostDate(post));
+const rawDate = getPostDate(post);
+const publishedLabel = formatEntryDate(post);
+const publishedIso = rawDate ? formatDate(rawDate) : undefined;
 const updatedStr = post.data.updatedAt ? formatDate(post.data.updatedAt) : null;
 const isPriv = isPrivateEntry(post);
-const isDraft = !isPriv && post.data.status === 'draft';
 ---
 
 <BaseLayout
@@ -37,15 +39,11 @@ const isDraft = !isPriv && post.data.status === 'draft';
 >
   <article class="post reveal" style="--i: 0">
     {
-      (isPriv || isDraft) && (
+      isPriv && (
         <aside class="preview-banner" role="status">
-          <span class:list={['status-pill', { 'status-pill--private': isPriv }]}>
-            {isPriv ? 'Private' : 'Draft'}
-          </span>
+          <span class="status-pill status-pill--private">Private</span>
           <span>
-            {isPriv
-              ? '로컬 전용 비공개 글입니다. Git 추적 및 프로덕션 빌드에서 제외됩니다.'
-              : '초안 상태의 글입니다. 릴리즈 전까지 프로덕션 빌드에서 제외됩니다.'}
+            비공개(<code>status: private</code>) 글입니다. 로컬 개발 서버에서만 보이며 프로덕션 빌드·RSS·사이트맵에는 포함되지 않습니다.
           </span>
         </aside>
       )
@@ -53,8 +51,8 @@ const isDraft = !isPriv && post.data.status === 'draft';
 
     <header class="post__header">
       <div class="post__meta mono tnum">
-        <time datetime={publishedStr}>{publishedStr}</time>
-        {updatedStr && updatedStr !== publishedStr && <span>· 수정 {updatedStr}</span>}
+        <time datetime={publishedIso}>{publishedLabel}</time>
+        {updatedStr && updatedStr !== publishedIso && <span>· 수정 {updatedStr}</span>}
       </div>
       <h1 class="post__title">{post.data.title}</h1>
       {post.data.summary && <p class="post__summary">{post.data.summary}</p>}

@@ -12,9 +12,6 @@
     "preview": "astro preview",
     "check": "astro check",
     "verify": "astro check && astro build && node scripts/verify-build.mjs",
-    "post:new": "node scripts/post.mjs new",
-    "post:release": "node scripts/post.mjs release",
-    "post:list": "node scripts/post.mjs list",
     "mascot:prepare": "node scripts/prepare-mascot.mjs"
   },
   "dependencies": {

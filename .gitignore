@@ -3,9 +3,8 @@ dist/
 .astro/
 node_modules/
 
-# Local-only private blog posts (never tracked in git until released)
-src/content/blog/private/*
-!src/content/blog/private/.gitkeep
+# Ephemeral checkout of private gaemi/writing repo in CI
+.writing/
 
 # OS & environment
 .DS_Store

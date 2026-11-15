@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, getPostDate, getPostSlug, getVisiblePosts, isPrivateEntry } from '../../lib/blog';
+import {
+  formatDate,
+  formatEntryDate,
+  getPostDate,
+  getPostSlug,
+  getVisiblePosts,
+  isPrivateEntry,
+} from '../../lib/blog';
 
 const posts = await getVisiblePosts();
 const isDev = import.meta.env.DEV;
@@ -40,7 +47,8 @@ const isDev = import.meta.env.DEV;
 
         {isDev && (
           <p class="dev-note mono">
-            Local dev: <code>npm run post:new -- first-note</code> 로 비공개 초안을 생성해 바로 미리볼 수 있습니다.
+            Local dev: <code>../writing</code> 저장소에서{' '}
+            <code>npm run post:new -- first-note</code> 실행 시 이곳에 실시간으로 반영됩니다.
           </p>
         )}
       </section>
@@ -49,9 +57,10 @@ const isDev = import.meta.env.DEV;
         <ul class="archive-list">
           {posts.map((post) => {
             const slug = getPostSlug(post);
-            const dateStr = formatDate(getPostDate(post));
+            const rawDate = getPostDate(post);
+            const labelStr = formatEntryDate(post);
+            const isoStr = rawDate ? formatDate(rawDate) : undefined;
             const isPriv = isPrivateEntry(post);
-            const isDraft = !isPriv && post.data.status === 'draft';
             return (
               <li class="archive-list__item">
                 <a class="archive-entry" href={`/blog/${slug}/`}>
@@ -59,12 +68,11 @@ const isDev = import.meta.env.DEV;
                     <div class="archive-entry__heading">
                       <h2 class="archive-entry__title">{post.data.title}</h2>
                       {isPriv && <span class="status-pill status-pill--private">Private</span>}
-                      {isDraft && <span class="status-pill">Draft</span>}
                     </div>
                     {post.data.summary && <p class="archive-entry__summary">{post.data.summary}</p>}
                   </div>
-                  <time class="archive-entry__date mono tnum" datetime={dateStr}>
-                    {dateStr}
+                  <time class="archive-entry__date mono tnum" datetime={isoStr}>
+                    {labelStr}
                   </time>
                 </a>
               </li>
@@ -93,7 +101,6 @@ const isDev = import.meta.env.DEV;
     font-size: var(--text-base);
   }
 
-  /* Empty State (3-beat pattern: what's empty · why/context · clear next action) */
   .empty-state {
     margin-block-start: var(--space-md);
     padding-block: var(--space-2xl);
@@ -140,7 +147,6 @@ const isDev = import.meta.env.DEV;
     font-size: var(--text-xs);
   }
 
-  /* Post List */
   .archive {
     margin-block-start: var(--space-md);
     border-block-start: var(--rule-strong);

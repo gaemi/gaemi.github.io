@@ -4,7 +4,6 @@ import { siteConfig } from '../data/site';
 import { getPostDate, getPostSlug, getVisiblePosts } from '../lib/blog';
 
 export async function GET(context: APIContext) {
-  // Always enforce production visibility so private/draft posts never enter RSS
   const posts = await getVisiblePosts(true);
 
   return rss({
@@ -14,7 +13,7 @@ export async function GET(context: APIContext) {
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.summary,
-      pubDate: getPostDate(post),
+      pubDate: getPostDate(post) ?? new Date(),
       link: `/blog/${getPostSlug(post)}/`,
     })),
   });

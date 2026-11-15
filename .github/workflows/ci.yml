@@ -12,8 +12,18 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      HAS_WRITING_KEY: ${{ secrets.WRITING_DEPLOY_KEY != '' }}
     steps:
       - uses: actions/checkout@v7
+
+      - name: Checkout private writing repository
+        if: env.HAS_WRITING_KEY == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: gaemi/writing
+          ssh-key: ${{ secrets.WRITING_DEPLOY_KEY }}
+          path: .writing
 
       - uses: actions/setup-node@v7
         with:
